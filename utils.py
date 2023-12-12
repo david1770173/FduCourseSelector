@@ -21,7 +21,7 @@ class Request:
                 data=data,
                 params=params,
                 allow_redirects=allow_redirects,
-                timeout=timeout)  
+                timeout=timeout)
             req.raise_for_status()
         except requests.exceptions.RequestException as e:
             if ErrMsg:

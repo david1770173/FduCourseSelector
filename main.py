@@ -11,7 +11,7 @@ from utils import *
 _, URL_DICT = ReadNetWorkJson()
 
 class CourseSearcher(CookieGetter):
-    def __init__(self, profileId=2224, CAPTCHA_TYPE='slide'): # This param will change with the semester
+    def __init__(self, profileId=2645, CAPTCHA_TYPE='slide'): # This param will change with the semester
         super(CourseSearcher, self).__init__()
         self.profileId = profileId
         self.CAPTCHA_TYPE = CAPTCHA_TYPE
@@ -126,7 +126,10 @@ class CourseSearcher(CookieGetter):
             ErrMsg="selCourse Error (selCourse)"
         )
         #print(response.content.decode(encoding='utf-8'))
-        print("选课成功")
+        if "失败" in response.content.decode(encoding='utf-8'):
+            print("fail")
+        else:
+            print("选课成功")
         
     def getCaptcha(self):
         param = {'_':int(time.time())}
@@ -141,6 +144,16 @@ class CourseSearcher(CookieGetter):
     
 
 if __name__ == "__main__":
+    flag=0
     launcher = CourseSearcher()
-    launcher.RunScript()
+    print(time.strftime("%H%M", time.localtime()))
+    while True:
+        if int(time.strftime("%H%M", time.localtime())) %100 %30 == 0 and flag == 0:
+            launcher = CourseSearcher()
+            print("relogined")
+            flag=1
+        launcher.RunScript()
+        time.sleep(30)
+        if int(time.strftime("%H%M", time.localtime())) % 100 % 30 == 1:
+            flag = 0
             
